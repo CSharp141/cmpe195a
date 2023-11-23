@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Question from "../components/Question.astro"
+
+import { getCollection, getEntry } from 'astro:content';
+
+
+const questions = (await getEntry('exams', 'food-exam'));
+
+
+---
+
+<Layout title="Exam name variable">
+
+    <form method="POST">
+        <ul>
+            {(questions.data).map((q: { question: string; options: any[]; }) =>
+                <Question q={q} />
+            )}
+        </ul>
+        <button type="submit">Submit</button>
+    </form>
+
+</Layout>
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+    }
+    button {
+        margin: 8px 0px 10px 20px;
+        padding: 5px;
+		background-color: #23262d;
+		border-radius: 7px;
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        max-width: 100px;
+    }
+</style>

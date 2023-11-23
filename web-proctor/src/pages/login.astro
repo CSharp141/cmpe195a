@@ -35,3 +35,27 @@ if (Astro.request.method === "POST") {
         </form>
     </main>
 </Layout>
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        max-width: 300px;
+        margin: auto;
+    }
+
+    label {
+        margin-bottom: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-top: 5px;
+    }
+
+    button {
+        margin-top: 10px;
+    }
+</style>
