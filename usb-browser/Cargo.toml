@@ -1,0 +1,9 @@
+[package]
+name = "usb-browser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wry = "0.34.2"
+tao = "0.23.0"
+anyhow = "1.0.75"
