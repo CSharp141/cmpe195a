@@ -293,7 +293,7 @@ Environment=XDG_SESSION_TYPE=x11
 Install necessary packages for autostarting with X
 
 ```shell
-pacman -S xorg-server xorg-xinit xf86-video-vesa openbox ttf-dejavu ttf-liberation networkmanager conky stalonetray
+pacman -S xorg-server xorg-xinit xf86-video-vesa openbox ttf-dejavu ttf-liberation networkmanager conky stalonetray gtk3 webkit2gtk-4.1
 ```
 
 Enable network manager
@@ -307,6 +307,12 @@ Set up `xorg-xinit` for autologin
 ```shell
 cp /etc/X11/xinit/xinitrc /home/ExamUser/.xinitrc
 vim /home/ExamUser/.xinitrc
+```
+
+Copy over the usb-proctor program
+
+```shell
+cp usb-browser/target/release/usb-browser /mnt/usb/home/ExamUser/usb-browser
 ```
 
 Replace the end of the file where programs are started with
@@ -326,10 +332,8 @@ vim /home/ExamUser/.config/openbox/autostart
 Append this to the end of the file
 
 ```shell
-xset -b
-(sleep 3s && nm-applet) &
-(sleep 3s && stalonetray) &
-(sleep 3s && conky) &
+# launch the exam software
+/home/ExamUser/usb-browser &
 ```
 
 Configure startx to launch X when ExamUser is logged in
@@ -344,4 +348,10 @@ Append this to the end of the `.bash_profile`
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
   exec startx
 fi
+```
+
+To launch in a virtual machine with KVM
+
+```shell
+sudo qemu-system-x86_64 -enable-kvm -cpu host -m 2G -hda /dev/sda
 ```
