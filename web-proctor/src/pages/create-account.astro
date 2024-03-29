@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { validateUser } from "../utils/auth";
+import { isUnique } from "../utils/new-user";
+import { db, User } from 'astro:db';
 
 
 let loginError = '';
@@ -10,26 +11,25 @@ if (Astro.request.method === "POST") {
         const data = await Astro.request.formData();
         const username = data.get("username");
         const password = data.get("password");
-
+        
         if (typeof username === 'string' && typeof password === 'string') {
-            const isValid = await validateUser(username, password);
+            const isValid = await isUnique(username);
             if (isValid) {
-                
+                await db.insert(User).values({ username, password });
             } else {
-                loginError = "Invalid username or password";
+                loginError = "Username already taken";
             }
         }
-    } 
-    catch (error) {
+
+    } catch (error) {
         if (error instanceof Error) {
             console.error(error.message);
-            loginError = 'An error occurred while logging in';
         }
     }
 }
 ---
 
-<Layout title="Login">
+<Layout title="Create Account">
     <main>
         <form method="POST">
             <label>
@@ -43,14 +43,11 @@ if (Astro.request.method === "POST") {
             <button>Submit</button>
             {loginError && <p style="color: red;">{loginError}</p>}
         </form>
-        <p>
-            <a href="/create-account">New user?</a>
-        </p>
     </main>
 </Layout>
 
 <style>
-    form, .link-container {
+    form {
         display: flex;
         flex-direction: column;
         max-width: 300px;
@@ -72,4 +69,5 @@ if (Astro.request.method === "POST") {
         text-align: center;
         margin-top: 50px;
     }
+
 </style>
