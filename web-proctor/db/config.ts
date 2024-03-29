@@ -2,29 +2,22 @@ import { defineDb, defineTable, column } from 'astro:db';
 
 const User = defineTable({
     columns: {
-        id: column.number({ primaryKey: true }),
-        username: column.text(),
-        password: column.text(),
+        id: column.text({ primaryKey: true, optional: false }),
+        username: column.text({ unique: true, optional: false}),
+        hashed_password: column.text( { optional: false }),
     }
 })
 
-const Comment = defineTable({
-    columns: {
-      // A string of text.
-      author: column.text(),
-      // A whole integer value.
-      likes: column.number(),
-      // A true or false value.
-      flagged: column.boolean(),
-      // Date/time values queried as JavaScript Date objects.
-      published: column.date(),
-      // An untyped JSON object.
-      metadata: column.json(),
-    }
-  });
-  
+const Session = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false }),
+    expires_at: column.number({ optional: false }),
+    user_id: column.text({ references: () => User.columns.id, optional: false }),
+  }
+})
+
 
 export default defineDb({
-    tables: { User },
+    tables: { User, Session },
 })
 
