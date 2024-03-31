@@ -1,21 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Question from "../components/Question.astro"
+// import { getCollection, getEntry } from 'astro:content';
+// const questions = (await getEntry('exams', 'food-exam'));
+import { db, ExamTable } from 'astro:db';
 
-import { getCollection, getEntry } from 'astro:content';
-
-
-const questions = (await getEntry('exams', 'food-exam'));
-
-
+const exam = (await db.select().from(ExamTable))[0];
 ---
 
-<Layout title="Exam name variable">
+<Layout title={(exam.name)}>
 
-    <form method="POST">
+    <form method="POST" action="api/submit-exam">
+        <input type="hidden" name="examId" value={exam.id} />
         <ul>
-            {(questions.data).map((q: { question: string; options: any[]; }) =>
-                <Question q={q} />
+            {( 
+                exam.questions as { question: string, options: any[] }[] )
+                    .map((q, index) => <Question qIndex={index++} q={q} />
             )}
         </ul>
         <button type="submit">Submit</button>
@@ -23,23 +23,11 @@ const questions = (await getEntry('exams', 'food-exam'));
 
 </Layout>
 
+
 <style>
-    form {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
     button {
         margin: 8px 0px 10px 20px;
-        padding: 5px;
-		background-color: #23262d;
-		border-radius: 7px;
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-        max-width: 100px;
-        color: white;
+        max-width: 200px;
     }
 
-    ul{
-        color: white;
-    }
 </style>

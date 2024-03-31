@@ -16,8 +16,24 @@ const Session = defineTable({
   }
 })
 
-
-export default defineDb({
-    tables: { User, Session },
+const ExamTable = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true, optional: false }),
+    name: column.text({ optional: false }),
+    questions: column.json({ optional: false }),
+  }
 })
 
+const TakenExam = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true, optional: false }),
+    byUser: column.text({ optional: false }),
+    name: column.text({ optional: false }),
+    questions: column.json({ optional: false }),
+    userAnswers: column.json(),
+  }
+})
+
+export default defineDb({
+    tables: { User, Session, ExamTable, TakenExam },
+})

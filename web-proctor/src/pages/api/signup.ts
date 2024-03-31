@@ -2,7 +2,6 @@ import { lucia } from "../../auth";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { db, eq, User } from 'astro:db';
-
 import type { APIContext } from "astro";
 
 export async function POST(context: APIContext): Promise<Response> {

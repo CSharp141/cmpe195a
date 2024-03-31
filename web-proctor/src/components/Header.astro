@@ -13,9 +13,17 @@
                 <a onclick="document.getElementById('jankyWorkAround').submit();">Sign Out</a>
             )}
             {!Astro.locals.user && (
-                <a href="/login">Login</a>
+                <a href="/login">Log In</a>
             )}
-
         </form>
     </nav>
 </header>
+
+<style>
+
+
+    form, .link-container {
+        display:inline;
+        flex-direction: row;
+    }
+</style>

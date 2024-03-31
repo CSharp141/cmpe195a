@@ -4,10 +4,7 @@ import Layout from '../layouts/Layout.astro';
 const user = Astro.locals.user;
 if (!user) {
     return Astro.redirect("/login");
-} else {
-
-
-}
+} 
 
 
 
@@ -16,6 +13,11 @@ if (!user) {
 
 <Layout title="Account">
 	<main>
-
+        <h2>Welcome, {user.username}!</h2>
     </main>
 </Layout>
+
+
+<style>
+
+</style>
