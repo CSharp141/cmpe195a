@@ -1,12 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Answer from "../components/Answer.astro"
-import { db, TakenExam } from 'astro:db';
-import { Debug } from "astro:components";
-
-const exam = (await db.select().from(TakenExam))[0];
+import { db, eq, TakenExam } from 'astro:db';
 
 
+const user = Astro.locals.user;
+if (!user) {
+    return Astro.redirect("/login");
+} 
+
+const urlParams = Astro.url.searchParams;
+if (urlParams.get("id") === null) {
+    Astro.redirect("/account")
+}
+
+let paramId = 0;
+const examId = urlParams.get("id")
+if (examId !== null) {
+    paramId = parseInt(examId)
+}
+
+const exam = (await db.select().from(TakenExam).where(eq(TakenExam.id, paramId)))[0];
+
+if (exam.byUser !== user.username) {
+    return Astro.redirect("/account")
+}
 ---
 
 <Layout title={(exam.name)}>

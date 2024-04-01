@@ -3,9 +3,25 @@ import Layout from "../layouts/Layout.astro";
 import Question from "../components/Question.astro"
 // import { getCollection, getEntry } from 'astro:content';
 // const questions = (await getEntry('exams', 'food-exam'));
-import { db, ExamTable } from 'astro:db';
+import { db, eq, ExamTable } from 'astro:db';
 
-const exam = (await db.select().from(ExamTable))[0];
+const user = Astro.locals.user;
+if (!user) {
+    return Astro.redirect("/login");
+} 
+
+const urlParams = Astro.url.searchParams;
+if (urlParams.get("id") === null) {
+    Astro.redirect("/account")
+}
+
+let paramId = 0;
+const examId = urlParams.get("id")
+if (examId !== null) {
+    paramId = parseInt(examId)
+}
+
+const exam = (await db.select().from(ExamTable).where(eq(ExamTable.id, paramId)))[0];
 ---
 
 <Layout title={(exam.name)}>
@@ -13,10 +29,10 @@ const exam = (await db.select().from(ExamTable))[0];
     <form method="POST" action="api/submit-exam">
         <input type="hidden" name="examId" value={exam.id} />
         <ul>
-            {( 
-                exam.questions as { question: string, options: any[] }[] )
-                    .map((q, index) => <Question qIndex={index++} q={q} />
-            )}
+            {
+                (exam.questions as { question: string, options: any[] }[] )
+                    .map((q, index) => <Question qIndex={index++} q={q} />)
+            }
         </ul>
         <button type="submit">Submit</button>
     </form>

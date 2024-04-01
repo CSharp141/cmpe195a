@@ -1,6 +1,5 @@
-import { db, eq, ExamTable, TakenExam } from "astro:db";
+import { db, eq, desc, ExamTable, TakenExam } from "astro:db";
 import type { APIContext } from "astro";
-import { number } from "astro/zod";
 
 export async function POST(context: APIContext): Promise<Response> {
 	const formData = await context.request.formData();
@@ -13,7 +12,6 @@ export async function POST(context: APIContext): Promise<Response> {
         });
     } 
 
-    //some typescript bs
     const formDataEntryValue = formData.get("examId");
     // Check if the value is not null and is a string before converting to a number
     const examId = (typeof formDataEntryValue === 'string' && formDataEntryValue !== '')
@@ -29,8 +27,7 @@ export async function POST(context: APIContext): Promise<Response> {
     });
 
 
+    const takenExam = (await db.select().from(TakenExam).orderBy(desc(TakenExam.id)))[0]
 
-
-    // Redirect the user to a results page or return a response
-    return context.redirect("/review-exam")
+    return context.redirect("/review-exam?id="+takenExam.id)
 }
