@@ -1,15 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-const user = Astro.locals.user;
-if (user) {
-    return Astro.redirect("/account");
-}
 ---
 
-<Layout title="Log In">
+<Layout title="Sign Up">
     <main>
-        <form method="POST" action="/api/login">
+        <form method="POST" action="/api/signup">
             <label>
                 Username:
                 <input type="text" name="username" required />
@@ -21,14 +16,11 @@ if (user) {
             <button>Submit</button>
             <!-- {loginError && <p style="color: red;">{loginError}</p>} -->
         </form>
-        <p>
-            <a href="/sign-up">New user?</a>
-        </p>
     </main>
 </Layout>
 
 <style>
-    form, .link-container {
+    form {
         max-width: 300px;
     }
     label {
@@ -47,4 +39,5 @@ if (user) {
         text-align: center;
         margin-top: 50px;
     }
+
 </style>

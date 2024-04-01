@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Answer from "../components/Answer.astro"
+import { db, eq, TakenExam } from 'astro:db';
+
+
+const user = Astro.locals.user;
+if (!user) {
+    return Astro.redirect("/login");
+} 
+
+const urlParams = Astro.url.searchParams;
+if (urlParams.get("id") === null) {
+    Astro.redirect("/account")
+}
+
+let paramId = 0;
+const examId = urlParams.get("id")
+if (examId !== null) {
+    paramId = parseInt(examId)
+}
+
+const exam = (await db.select().from(TakenExam).where(eq(TakenExam.id, paramId)))[0];
+
+if (exam.byUser !== user.username) {
+    return Astro.redirect("/account")
+}
+---
+
+<Layout title={(exam.name)}>
+
+    <ul>
+        {
+            (exam.questions as { question: string, options: string[], answer: string }[])
+                .map((q, qIndex) => {
+                    const userAnswerEntry = (exam.userAnswers as [string, string][]).find(([index, _]) => parseInt(index) === qIndex);
+                    const userAnswer = userAnswerEntry ? userAnswerEntry[1] : '';
+
+                    return <Answer qIndex={qIndex} q={q} userAnswer={userAnswer} />;
+                })
+
+        }
+    </ul>
+
+    <button id="redirectButton">Return to Account</button>
+
+
+</Layout>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const redirectButton = document.getElementById('redirectButton');
+
+        if (redirectButton !== null) {
+            redirectButton.onclick = function() {
+                window.location.href = '/account';
+            };
+        }
+    });
+</script>
+
+
+<style>
+    button#redirectButton {
+        margin-left: ;
+        margin-bottom: ;
+        margin: 10px 20px 20px 20px;
+        padding-inline: 2%;
+    }
+</style>

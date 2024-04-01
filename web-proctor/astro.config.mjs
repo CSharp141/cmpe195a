@@ -6,6 +6,11 @@ import db from "@astrojs/db";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [svelte(), tailwind(), db()],
   output: 'server',
+  integrations: [svelte(), tailwind(), db()],
+  vite: {
+		optimizeDeps: {
+			exclude: ["oslo"]
+		}
+	},
 });

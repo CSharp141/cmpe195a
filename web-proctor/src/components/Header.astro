@@ -1,11 +1,27 @@
 ---
+
 ---
 
 <header>
     <nav>
-        <a href="/">Home</a>
-        <a href="/resources">Resources</a>
-        <a href="/account">Account</a>
-        <a href="/login">Login</a>
+        <form id="jankyWorkAround" method="post" action="/api/logout">
+            <a href="/">Home</a>
+            <a href="/resources">Resources</a>
+
+            {Astro.locals.user && (
+                <a href="/account">Account</a>
+                <a onclick="document.getElementById('jankyWorkAround').submit();">Sign Out</a>
+            )}
+            {!Astro.locals.user && (
+                <a href="/login">Log In</a>
+            )}
+        </form>
     </nav>
 </header>
+
+<style>
+    form, .link-container {
+        display:inline;
+        flex-direction: row;
+    }
+</style>

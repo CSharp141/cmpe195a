@@ -1,11 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { db, eq, ExamTable, TakenExam } from 'astro:db';
+
+const user = Astro.locals.user;
+if (!user) {
+    return Astro.redirect("/login");
+} 
+
+const exams = (await db.select().from(ExamTable));
+const takenExams = (await db.select().from(TakenExam).where(eq(TakenExam.byUser, user.username)));
 
 ---
 
 
 <Layout title="Account">
 	<main>
+        <h2>Welcome, {user.username}!</h2>
 
+        <div class="account-page">
+            <div class="exams-list">
+                <h2>Available Exams</h2>
+                <ul id="availableExams">
+                        {
+                            exams.map((exam) => {
+                                const loc = "/exam?id=" + exam.id;
+                                return <li><a href={loc}>{exam.name}</a></li>;
+                            })
+                        }
+                </ul>
+            </div>
+            <div class="exams-list">
+                <h2>Taken Exams</h2>
+                <ul id="takenExams">
+                        {
+                            takenExams.map((exam) => {
+                                const loc = "/review-exam?id=" + exam.id;
+                                return <li><a href={loc}>{exam.name}</a></li>;
+                            })
+                        }
+                </ul>
+            </div>
+        </div>
+        
     </main>
 </Layout>
+
+
+<style>
+    .account-page {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .exams-list {
+        flex-direction: column;
+        width: 100%; /* Adjust based on the gap you want between columns */
+        margin: 0 auto;
+    }
+
+</style>
