@@ -1,10 +1,10 @@
 import { defineDb, defineTable, column } from 'astro:db';
 
 const User = defineTable({
-    columns: {
-        id: column.text({ primaryKey: true, optional: false }),
-        username: column.text({ unique: true, optional: false}),
-        hashed_password: column.text( { optional: false }),
+  columns: {
+    id: column.text({ primaryKey: true, optional: false }),
+    username: column.text({ unique: true, optional: false}),
+    hashed_password: column.text( { optional: false }),
     }
 })
 
