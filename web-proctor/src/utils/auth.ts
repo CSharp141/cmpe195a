@@ -6,5 +6,5 @@ export async function validateUser(username: string, password: string) {
         return false;
     }
     // hash maybe lol
-    return user.password === password;
+    return user.hashed_password === password;
 }
