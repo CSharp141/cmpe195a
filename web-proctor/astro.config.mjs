@@ -14,7 +14,7 @@ export default defineConfig({
   integrations: [svelte(), tailwind(), db()],
   vite: {
     optimizeDeps: {
-      exclude: ["oslo"]
+      exclude: ["astro:db", "oslo"]
     }
   },
 });

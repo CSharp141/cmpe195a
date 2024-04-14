@@ -1,16 +1,8 @@
 import { Lucia } from "lucia";
-import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite";
-import { createClient } from "@libsql/client";
+import { AstroDBAdapter } from "lucia-adapter-astrodb";
+import { db, Session, User } from "astro:db";
 
-const db = createClient({
-	url: "file:.astro/content.db"
-});
-
-const adapter = new LibSQLAdapter(db, {
-	user: "user",
-	session: "session"
-});
-
+const adapter = new AstroDBAdapter(db, Session, User);
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {
@@ -37,4 +29,3 @@ declare module "lucia" {
 interface DatabaseUserAttributes {
 	username: string;
 };
-

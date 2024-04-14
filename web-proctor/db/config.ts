@@ -11,8 +11,8 @@ const User = defineTable({
 const Session = defineTable({
   columns: {
     id: column.text({ primaryKey: true, optional: false }),
-    expires_at: column.number({ optional: false }),
-    user_id: column.text({ references: () => User.columns.id, optional: false }),
+    expiresAt: column.date({ optional: false }),
+    userId: column.text({ references: () => User.columns.id, optional: false }),
   }
 })
 
