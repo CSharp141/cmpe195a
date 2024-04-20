@@ -1,8 +1,5 @@
 name: Docker
 
-env:
-  ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
-
 on:
   push:
     branches:
@@ -21,6 +18,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:web-proctor"
           push: true
           tags: user/app:latest
+          context: "{{defaultContext}}:web-proctor"
+          secret-envs: ASTRO_STUDIO_APP_TOKEN=${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
