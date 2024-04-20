@@ -7,14 +7,12 @@ on:
   push:
     branches:
       - main
+      - studio-fix
   pull_request:
     types: [opened, reopened, synchronize]
 
 jobs:
   DB:
-    defaults:
-      run:
-        working-directory: web-proctor
     permissions:
       contents: read
       actions: read
@@ -25,5 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: jaid/action-npm-install@v1.2.1
-      - uses: withastro/action-studio@main
+      - name: Install and push to Astro Studio
+        working-directory: web-proctor
+        run: |
+          npm install
+          npm run astro db push
