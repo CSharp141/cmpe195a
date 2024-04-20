@@ -12,6 +12,9 @@ on:
 
 jobs:
   DB:
+    defaults:
+      run:
+        working-directory: web-proctor
     permissions:
       contents: read
       actions: read
