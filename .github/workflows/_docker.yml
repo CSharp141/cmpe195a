@@ -28,6 +28,5 @@ jobs:
         with:
           push: true
           context: "./web-proctor"
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ryansjsu/cmpe195a-web-proctor:latest
           build-args: app_token=${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
