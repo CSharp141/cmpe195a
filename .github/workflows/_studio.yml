@@ -26,6 +26,4 @@ jobs:
         with:
           node-version: 20
       - uses: jaid/action-npm-install@v1.2.1
-        working-directory: ./web-proctor
       - uses: withastro/action-studio@main
-        working-directory: ./web-proctor
