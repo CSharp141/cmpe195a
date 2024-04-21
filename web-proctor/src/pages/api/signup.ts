@@ -33,15 +33,20 @@ export async function POST(context: APIContext): Promise<Response> {
 		});
     }
 
+	console.log("Creating user", username);
 
 	const userId = generateId(15);
 	const hashedPassword = await new Argon2id().hash(password);
     await db.insert(User).values({ id: userId, username: username, hashed_password: hashedPassword });
 
+	const idexists = (await db.select().from(User).where(eq(User.id, userId)))[0].id;
+	console.log("User created", username + " " + idexists);
 
 	const session = await lucia.createSession(userId, {});
-	const sessionCookie = lucia.createSessionCookie(session.id);
+	const sessionCookie = await lucia.createSessionCookie(session.id);
 	context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
+	console.log("Session maybe created", session.id);
 
 	return context.redirect("/account");
 }
