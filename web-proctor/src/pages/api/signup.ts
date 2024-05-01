@@ -43,7 +43,7 @@ export async function POST(context: APIContext): Promise<Response> {
 	console.log("User created", username + " " + idexists);
 
 	const session = await lucia.createSession(userId, {});
-	const sessionCookie = await lucia.createSessionCookie(session.id);
+	const sessionCookie = lucia.createSessionCookie(session.id);
 	context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
 	console.log("Session maybe created", session.id);

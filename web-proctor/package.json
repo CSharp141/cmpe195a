@@ -26,6 +26,8 @@
         "typescript": "^5.4.5"
     },
     "devDependencies": {
+        "@testing-library/cypress": "^10.0.1",
+        "cypress": "^13.8.1",
         "daisyui": "^4.4.2"
     }
 }
