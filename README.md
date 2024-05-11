@@ -1,6 +1,4 @@
 # USB Exam Proctor Deployment Instructions
-Also on Github @
-`https://github.com/CSharp141/cmpe195a`
 
 Table of Contents
 1. USB Install Instructions
